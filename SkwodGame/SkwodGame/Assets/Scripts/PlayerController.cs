@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public Animator animator;
+
     public float speed;
     public float strafeSpeed;
     public float jumpForce;
@@ -24,25 +26,46 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 hips.AddForce(hips.transform.forward * speed * 1.5f);
+                animator.SetBool("isWalk", true);
+                animator.SetBool("isRun", true);
+
             } else
             {
                 hips.AddForce(hips.transform.forward * speed);
+                animator.SetBool("isWalk", true);
+                animator.SetBool("isRun", false);
             }
+        } else
+        {
+            animator.SetBool("isWalk", false);
+            animator.SetBool("isRun", false);
         }
 
         if (Input.GetKey(KeyCode.A))
         {
             hips.AddForce(-hips.transform.right * strafeSpeed);
+            animator.SetBool("isSideLeft", true);
+        } else
+        {
+            animator.SetBool("isSideLeft", false);
         }
 
         if (Input.GetKey(KeyCode.S))
         {
             hips.AddForce(-hips.transform.forward * speed);
+            animator.SetBool("isWalk", true);
+        } else if (!Input.GetKey(KeyCode.W))
+        {
+            animator.SetBool("isWalk", false);
         }
 
         if (Input.GetKey(KeyCode.D))
         {
             hips.AddForce(hips.transform.right * strafeSpeed);
+            animator.SetBool("isSideRight", true);
+        } else
+        {
+            animator.SetBool("isSideRight", false);
         }
 
         if (Input.GetAxis("Jump") > 0)
@@ -52,6 +75,17 @@ public class PlayerController : MonoBehaviour
                 hips.AddForce(new Vector3(0, jumpForce, 0));
                 isGrounded = false;
             }
+        }
+
+        if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.D))
+        {
+            
+        } else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
+        {
+            
+        } else
+        {
+            
         }
     }
 
